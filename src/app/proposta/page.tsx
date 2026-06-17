@@ -1,9 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+import LimitModal from "@/components/LimitModal";
 import { FileText, CheckCircle, Copy, Download, RotateCcw } from "lucide-react";
+import { getUsage, getLimit, hasReachedLimit, incrementUsage } from "@/lib/usageLimit";
 
 const nicheTemplates: Record<string, { deliverables: string[]; clausulas: string[] }> = {
   "Desenvolvimento Web": {
@@ -239,9 +242,17 @@ Gerado por FreelancerTools · freelancertools.com.br
 }
 
 export default function PropostaPage() {
+  const { data: session } = useSession();
+  const isPro = session?.user?.isPro ?? false;
   const [step, setStep] = useState<"form" | "result">("form");
   const [copied, setCopied] = useState(false);
   const [proposal, setProposal] = useState("");
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const [usage, setUsage] = useState(0);
+  const limit = getLimit("proposta");
+
+  useEffect(() => { setUsage(getUsage("proposta")); }, []);
+
   const [form, setForm] = useState({
     niche: "", clientName: "", projectName: "", projectDesc: "",
     deadline: "30", value: "", freelancerName: "", revisions: "2",
@@ -253,6 +264,12 @@ export default function PropostaPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (hasReachedLimit("proposta", isPro)) {
+      setShowLimitModal(true);
+      return;
+    }
+    incrementUsage("proposta");
+    setUsage(getUsage("proposta"));
     setProposal(generateProposal(form));
     setStep("result");
   }
@@ -275,9 +292,19 @@ export default function PropostaPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      {showLimitModal && <LimitModal tool="proposta" onClose={() => setShowLimitModal(false)} />}
       <Navbar />
       <PageHeader icon={FileText} title="Gerador de Proposta Comercial" description="Templates profissionais por nicho, personalizados com seus dados em 2 minutos." gradient="from-emerald-500 to-teal-600" />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-10 w-full -mt-4">
+
+        {!isPro && step === "form" && (
+          <div className="mb-4 flex items-center justify-between bg-white border border-gray-200 rounded-2xl px-5 py-3 text-sm">
+            <span className="text-gray-500">Propostas gratuitas este mês:</span>
+            <span className={`font-bold ${usage >= limit ? "text-red-500" : "text-emerald-600"}`}>
+              {usage}/{limit}
+            </span>
+          </div>
+        )}
 
         {step === "form" && (
           <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
