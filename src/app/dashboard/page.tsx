@@ -35,25 +35,25 @@ export default function DashboardPage() {
       <Navbar />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
         {/* Header */}
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
           <div className="flex items-center gap-4">
             {session.user?.image ? (
-              <img src={session.user.image} alt="" className="w-14 h-14 rounded-2xl shadow-md" />
+              <img src={session.user.image} alt="" className="w-14 h-14 rounded-2xl shadow-md flex-shrink-0" />
             ) : (
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-black text-xl">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-black text-xl flex-shrink-0">
                 {session.user?.name?.[0] ?? "?"}
               </div>
             )}
-            <div>
-              <h1 className="text-2xl font-black text-gray-900">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-black text-gray-900">
                 Olá, {session.user?.name?.split(" ")[0]}! 👋
               </h1>
-              <p className="text-gray-500 text-sm">{session.user?.email}</p>
+              <p className="text-gray-500 text-sm truncate">{session.user?.email}</p>
             </div>
           </div>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 px-4 py-2 rounded-xl transition-all"
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 px-4 py-2 rounded-xl transition-all self-start sm:self-auto"
           >
             <LogOut className="w-4 h-4" />
             Sair

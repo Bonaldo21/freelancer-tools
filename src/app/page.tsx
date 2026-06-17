@@ -105,27 +105,27 @@ export default function Home() {
             100% gratuito · Sem cadastro · Sem enrolação
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-6 animate-fade-in-up animate-delay-100">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight mb-6 animate-fade-in-up animate-delay-100">
             Ferramentas para<br />
             <span className="shimmer-text">freelancers brasileiros</span>
           </h1>
 
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-delay-200">
+          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-delay-200">
             Calcule seu preço, gere propostas, crie contratos e simule seu MEI.
             Tudo em um só lugar, de graça.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animate-delay-300">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 animate-fade-in-up animate-delay-300">
             <Link
               href="/calculadora-preco"
-              className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95"
+              className="group inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold px-6 sm:px-8 py-4 rounded-2xl text-base sm:text-lg transition-all duration-300 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-105 active:scale-95"
             >
               Calcular meu preço/hora
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/proposta"
-              className="group inline-flex items-center gap-2 border border-gray-700 hover:border-emerald-500/50 bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+              className="group inline-flex items-center justify-center gap-2 border border-gray-700 hover:border-emerald-500/50 bg-white/5 hover:bg-white/10 text-white font-semibold px-6 sm:px-8 py-4 rounded-2xl text-base sm:text-lg transition-all duration-300 hover:scale-105 active:scale-95"
             >
               Gerar proposta grátis
               <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -166,7 +166,7 @@ export default function Home() {
       <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4">
               Escolha uma ferramenta
             </h2>
             <p className="text-gray-500 text-lg max-w-xl mx-auto">
@@ -215,7 +215,7 @@ export default function Home() {
       <section className="py-24 px-6 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4">
               Quem usa, recomenda
             </h2>
             <p className="text-gray-500 text-lg">+12.000 freelancers já usam o FreelancerTools.</p>
@@ -263,10 +263,10 @@ export default function Home() {
                 <Zap className="w-4 h-4" />
                 Plano Pro — Para freelancers sérios
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
                 Quer ainda mais recursos?
               </h2>
-              <p className="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">
+              <p className="text-gray-400 text-base sm:text-xl mb-10 max-w-2xl mx-auto">
                 No plano Pro você desbloqueia templates premium, sem anúncios, histórico completo e muito mais.
               </p>
 

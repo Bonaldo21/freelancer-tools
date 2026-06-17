@@ -16,8 +16,8 @@ export default function LimitModal({ tool, onClose }: Props) {
   const { limit, name } = labels[tool];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in-up">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in-up">
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-xl hover:bg-gray-100 transition-colors"

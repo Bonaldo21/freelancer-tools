@@ -29,8 +29,8 @@ export default function ProPage() {
               <Zap className="w-4 h-4" />
               Plano Pro — Para freelancers sérios
             </div>
-            <h1 className="text-5xl font-black mb-4">Pare de perder tempo.<br />Feche mais contratos.</h1>
-            <p className="text-emerald-100 text-xl mb-8">
+            <h1 className="text-3xl sm:text-5xl font-black mb-4">Pare de perder tempo.<br />Feche mais contratos.</h1>
+            <p className="text-emerald-100 text-base sm:text-xl mb-8">
               Acesse todos os recursos premium do FreelancerTools por menos do que um café por semana.
             </p>
             <div className="inline-flex flex-col items-center bg-white rounded-2xl p-8 shadow-2xl text-gray-900">
@@ -52,10 +52,38 @@ export default function ProPage() {
         </section>
 
         {/* Comparison */}
-        <section className="py-24 px-6">
+        <section className="py-16 sm:py-24 px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-black text-gray-900 text-center mb-16">Grátis vs Pro</h2>
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <h2 className="text-3xl sm:text-4xl font-black text-gray-900 text-center mb-10 sm:mb-16">Grátis vs Pro</h2>
+
+            {/* Mobile: two-column cards */}
+            <div className="sm:hidden grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-white border-2 border-gray-100 rounded-2xl p-4">
+                <div className="text-sm font-bold text-gray-600 mb-3 text-center">Gratuito</div>
+                <ul className="space-y-2.5">
+                  {features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-gray-500">
+                      <span className="mt-0.5 w-3 h-3 rounded-full bg-gray-200 flex-shrink-0" />
+                      {f.free}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4">
+                <div className="text-sm font-bold text-emerald-700 mb-3 text-center">Pro ✓</div>
+                <ul className="space-y-2.5">
+                  {features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-emerald-700 font-medium">
+                      <CheckCircle className="w-3 h-3 text-emerald-500 flex-shrink-0 mt-0.5" />
+                      {f.pro}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Desktop: full table */}
+            <div className="hidden sm:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
               <div className="grid grid-cols-3 bg-gray-50 border-b border-gray-100">
                 <div className="p-4 text-sm font-medium text-gray-500">Recurso</div>
                 <div className="p-4 text-sm font-bold text-gray-700 text-center">Gratuito</div>

@@ -124,14 +124,39 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/pro"
-            onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-2 mt-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-bold px-4 py-3 rounded-xl shadow-lg shadow-emerald-200/50"
-          >
-            <Zap className="w-4 h-4" />
-            Pro — R$29/mês
-          </Link>
+          <div className="pt-2 border-t border-gray-100 mt-1 space-y-2">
+            {session ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                {session.user?.image ? (
+                  <img src={session.user.image} alt="" className="w-6 h-6 rounded-full" />
+                ) : (
+                  <LayoutDashboard className="w-4 h-4" />
+                )}
+                {session.user?.name?.split(" ")[0]} {session.user?.isPro && "· Pro ✓"}
+              </Link>
+            ) : (
+              <>
+                <button
+                  onClick={() => { setOpen(false); signIn("google", { callbackUrl: "/dashboard" }); }}
+                  className="w-full flex items-center justify-center px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 border border-gray-200"
+                >
+                  Entrar com Google
+                </button>
+                <Link
+                  href="/pro"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-bold px-4 py-3 rounded-xl shadow-lg shadow-emerald-200/50"
+                >
+                  <Zap className="w-4 h-4" />
+                  Pro — R$29/mês
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
