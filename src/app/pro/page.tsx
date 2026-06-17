@@ -141,9 +141,11 @@ function CheckoutForm({ plano = "pro" }: { plano?: "pro" | "agencia" }) {
         return;
       }
 
-      // Em dev usa sandbox, em produção usa link real
-      const isDev = window.location.hostname === "localhost";
-      window.location.href = isDev ? data.sandbox_init_point : data.init_point;
+      // Usa sandbox se env forçar ou se for localhost
+      const isSandbox =
+        process.env.NEXT_PUBLIC_MP_SANDBOX === "true" ||
+        window.location.hostname === "localhost";
+      window.location.href = isSandbox ? data.sandbox_init_point : data.init_point;
     } catch {
       setErro("Erro de conexão. Verifique sua internet e tente novamente.");
     } finally {
