@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { CheckCircle, Zap, Shield, Star, Loader2, Lock } from "lucide-react";
+import { CheckCircle, Zap, Shield, Star, Loader2, Lock, Crown } from "lucide-react";
 import Link from "next/link";
 
 const features = [
@@ -17,6 +18,35 @@ const features = [
 ];
 
 export default function ProPage() {
+  const { data: session } = useSession();
+  const isPro = session?.user?.isPro;
+
+  if (isPro) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center px-6 py-24">
+          <div className="text-center max-w-md">
+            <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-200">
+              <Crown className="w-10 h-10 text-yellow-300" />
+            </div>
+            <h1 className="text-3xl font-black text-gray-900 mb-3">Você já é Pro!</h1>
+            <p className="text-gray-500 mb-8 leading-relaxed">
+              Sua assinatura está ativa. Aproveite todos os recursos premium sem limites.
+            </p>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-lg shadow-emerald-200"
+            >
+              Ir para o dashboard
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />

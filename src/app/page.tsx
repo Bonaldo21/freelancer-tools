@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
@@ -84,6 +86,9 @@ const proFeatures = [
 ];
 
 export default function Home() {
+  const { data: session } = useSession();
+  const isPro = session?.user?.isPro;
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
@@ -247,8 +252,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pro CTA */}
-      <section className="py-24 px-6">
+      {/* Pro CTA — esconde para usuários Pro */}
+      {!isPro && <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-12 md:p-16 text-center">
             {/* decorations */}
@@ -290,7 +295,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
 
       <Footer />
     </div>
