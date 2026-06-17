@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import LimitModal from "@/components/LimitModal";
+import AdBanner from "@/components/AdBanner";
 import { FileSignature, CheckCircle, Copy, Download, RotateCcw } from "lucide-react";
 import { getUsage, getLimit, hasReachedLimit, incrementUsage } from "@/lib/usageLimit";
 
@@ -312,6 +313,7 @@ export default function ContratoPage() {
 
         {step === "result" && (
           <div>
+            <AdBanner slot="2847391056" format="horizontal" className="mb-6 rounded-2xl bg-gray-100 min-h-[90px]" />
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-black text-gray-900">Contrato gerado!</h2>

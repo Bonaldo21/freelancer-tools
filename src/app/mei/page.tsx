@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+import AdBanner from "@/components/AdBanner";
 import { Receipt, CheckCircle, XCircle, AlertCircle, TrendingUp } from "lucide-react";
 
 const MEI_LIMITE_ANUAL = 81000;
@@ -209,6 +210,7 @@ export default function MeiPage() {
             </div>
           </div>
         </div>
+        <AdBanner slot="2847391056" format="horizontal" className="mt-8 rounded-2xl bg-gray-100 min-h-[90px]" />
       </main>
       <Footer />
     </div>
