@@ -1,12 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { markUserAsPro } from "@/lib/db";
 import pool from "@/lib/db";
+import { createHmac } from "crypto";
 
 const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN!;
+const WEBHOOK_SECRET = process.env.MP_WEBHOOK_SECRET;
+
+function validarAssinatura(req: NextRequest, body: string): boolean {
+  if (!WEBHOOK_SECRET) return true; // sem secret configurado, passa
+  const xSignature = req.headers.get("x-signature");
+  const xRequestId = req.headers.get("x-request-id");
+  const url = new URL(req.url);
+  const dataId = url.searchParams.get("data.id") ?? "";
+
+  if (!xSignature) return false;
+
+  const parts = Object.fromEntries(xSignature.split(",").map((p) => p.trim().split("=")));
+  const ts = parts["ts"];
+  const v1 = parts["v1"];
+
+  const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`;
+  const hmac = createHmac("sha256", WEBHOOK_SECRET).update(manifest).digest("hex");
+
+  return hmac === v1;
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const rawBody = await req.text();
+
+    if (!validarAssinatura(req, rawBody)) {
+      console.warn("[Webhook] Assinatura inválida — ignorado");
+      return NextResponse.json({ error: "Assinatura inválida." }, { status: 401 });
+    }
+
+    const body = JSON.parse(rawBody);
     const { type, data } = body;
 
     // Assinatura recorrente
@@ -39,13 +67,13 @@ export async function POST(req: NextRequest) {
       const payment = await res.json();
       if (payment.status === "approved" && payment.payer?.email) {
         await markUserAsPro(payment.payer.email, data.id);
-        console.log(`[Webhook] ✅ Pro ativado (pagamento avulso) para ${payment.payer.email}`);
+        console.log(`[Webhook] ✅ Pro ativado para ${payment.payer.email}`);
       }
     }
 
     return NextResponse.json({ received: true });
   } catch (err) {
     console.error("Webhook error:", err);
-    return NextResponse.json({ error: "Erro no webhook." }, { status: 500 });
+    return NextResponse.json({ error: "Erro interno." }, { status: 500 });
   }
 }
