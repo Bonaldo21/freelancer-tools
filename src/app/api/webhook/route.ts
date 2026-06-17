@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { markUserAsPro } from "@/lib/db";
 
 const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN!;
 
@@ -15,15 +16,11 @@ export async function POST(req: NextRequest) {
 
       const { status, payer, external_reference, transaction_amount } = payment;
 
-      console.log(`[Webhook MP] Pagamento ${status}`);
-      console.log(`  Email: ${payer?.email}`);
-      console.log(`  Referência: ${external_reference}`);
-      console.log(`  Valor: R$${transaction_amount}`);
+      console.log(`[Webhook MP] Pagamento ${status} — ${payer?.email} — R$${transaction_amount}`);
 
-      if (status === "approved") {
-        // Aqui você liberaria o acesso Pro para o usuário
-        // Ex: await db.ativarPro({ email: payer.email, referencia: external_reference })
-        console.log(`[Webhook MP] ✅ Acesso Pro ativado para ${payer?.email}`);
+      if (status === "approved" && payer?.email) {
+        await markUserAsPro(payer.email, external_reference ?? data.id);
+        console.log(`[Webhook MP] ✅ Pro ativado para ${payer.email}`);
       }
     }
 

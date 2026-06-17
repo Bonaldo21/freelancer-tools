@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Wrench, Menu, X, Zap } from "lucide-react";
+import { Wrench, Menu, X, Zap, LayoutDashboard, Crown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useSession, signIn } from "next-auth/react";
 
 const links = [
   { href: "/calculadora-preco", label: "Preço/Hora" },
@@ -15,6 +16,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -55,15 +57,44 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Pro CTA */}
+        {/* Auth / Pro CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/pro"
-            className="relative inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-emerald-200/50 hover:shadow-emerald-300/50 hover:scale-105 active:scale-95"
-          >
-            <Zap className="w-3.5 h-3.5" />
-            Pro — R$29/mês
-          </Link>
+          {session ? (
+            <>
+              {session.user?.isPro && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">
+                  <Crown className="w-3.5 h-3.5 text-yellow-500" /> Pro
+                </span>
+              )}
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-gray-300 px-4 py-2 rounded-xl transition-all"
+              >
+                {session.user?.image ? (
+                  <img src={session.user.image} alt="" className="w-5 h-5 rounded-full" />
+                ) : (
+                  <LayoutDashboard className="w-4 h-4" />
+                )}
+                {session.user?.name?.split(" ")[0]}
+              </Link>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Entrar
+              </button>
+              <Link
+                href="/pro"
+                className="relative inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-emerald-200/50 hover:scale-105 active:scale-95"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                Pro — R$29/mês
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
