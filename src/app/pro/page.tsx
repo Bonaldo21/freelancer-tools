@@ -141,8 +141,9 @@ function CheckoutForm({ plano = "pro" }: { plano?: "pro" | "agencia" }) {
         return;
       }
 
-      // Redireciona para o checkout do Mercado Pago
-      window.location.href = data.init_point;
+      // Em dev usa sandbox, em produção usa link real
+      const isDev = window.location.hostname === "localhost";
+      window.location.href = isDev ? data.sandbox_init_point : data.init_point;
     } catch {
       setErro("Erro de conexão. Verifique sua internet e tente novamente.");
     } finally {
